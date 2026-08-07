@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import  { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -19,40 +20,45 @@ export default function Contact() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-      const response = await fetch('http://localhost:5000/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    const templateParams = {
+      from_name: formData.name,
+      from_email: formData.email,
+      phone: formData.phone,
+      subject: formData.subject,
+      budget: formData.budget,
+      message: formData.message,
+    };
+
+    emailjs
+      .send(
+        'YOUR_SERVICE_ID',   // Replace with your EmailJS Service ID
+        'YOUR_TEMPLATE_ID',  // Replace with your EmailJS Template ID
+        templateParams,
+        'YOUR_PUBLIC_KEY'    // Replace with your EmailJS Public Key
+      )
+      .then(
+        () => {
+          setLoading(false);
+          toast.success('Inquiry submitted successfully to Gmail!');
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            subject: 'Website',
+            budget: '',
+            message: '',
+          });
         },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        toast.success(data.message || 'Inquiry submitted successfully!');
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          subject: 'Website',
-          budget: '',
-          message: '',
-        });
-      } else {
-        toast.error(data.message || 'Something went wrong. Please try again.');
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error('Unable to connect to server. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
+        (error) => {
+          console.error('EmailJS Error:', error);
+          setLoading(false);
+          toast.error('Failed to send message. Please try again.');
+        }
+      );
   };
 
   // Animation Variants
@@ -129,7 +135,7 @@ export default function Contact() {
                 <Phone className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-bold text-sm text-slate-100">Phone</h4>
-                  <p className="text-slate-300 text-xs">+88 01970 360763 </p>
+                  <p className="text-slate-300 text-xs">+88 01970 360763</p>
                 </div>
               </motion.div>
 
@@ -254,7 +260,7 @@ export default function Contact() {
                 whileTap={{ scale: loading ? 1 : 0.98 }}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition disabled:opacity-50"
               >
-                {loading ? 'Sending...' : 'Send Message'} 
+                {loading ? 'Sending...' : 'Send Message'}
                 <motion.div
                   animate={{ x: loading ? [0, 5, 0] : 0 }}
                   transition={{ repeat: loading ? Infinity : 0, duration: 0.6 }}

@@ -1,30 +1,38 @@
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-// Fixed imports: Default imports used to prevent undefined component errors
-import Navbar from './components/Navbar'
-import Hero from './components/Hero';
-import About from './components/About'; // Added missing About import
-import Products from './components/Products';
-import Services from './components/Services';
-
-import Footer from './components/Footer';
+import { CompanyProvider, useCompany } from './components/CompanyContext';
+import { DynamicClients, DynamicReviews, DynamicTeam } from './components/ClientAndTeamSections';
+import AdminPanel from './components/AdminPanel';
+import About from './components/About';
 import Contact from './components/Contect';
+import Hero from './components/Hero';
+import Footer from './components/Footer';
+import Navbar from './components/Navbar';
+
+function AppContent() {
+  const { companyData } = useCompany();
+
+  return (
+    <div className="bg-slate-900 text-slate-100 min-h-screen">
+      {/* Existing Sections dynamically connected */}
+      <Navbar/>
+      <Hero companyName={companyData.name} address={companyData.address.hq} />
+      <DynamicClients />
+      <About />
+      <DynamicTeam />
+      <DynamicReviews />
+      <Contact companyAddress={companyData.address} />
+      <Footer companyName={companyData.name} />
+
+      {/* Live Admin Interface */}
+      <AdminPanel />
+    </div>
+  );
+}
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
-      <ToastContainer position="top-right" autoClose={4000} theme="colored" />
-    <Navbar/>
-      <main className="flex-grow">
-        <Hero />
-        <About />
-        <Products />
-        <Services />
-        <Contact/>
-      </main>
-      <Footer />
-    </div>
+    <CompanyProvider>
+      <AppContent />
+    </CompanyProvider>
   );
 }
