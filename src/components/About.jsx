@@ -57,8 +57,13 @@ function About() {
   };
 
   return (
-    <section id="about" className="py-20 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="relative py-20 bg-slate-950 text-white overflow-hidden">
+      
+      {/* Background Radial Glow Effects */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-blue-600/10 blur-[130px] rounded-full pointer-events-none z-0" />
+      <div className="absolute bottom-10 right-10 w-[400px] h-[300px] bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none z-0" />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <motion.div
@@ -68,13 +73,13 @@ function About() {
           variants={headerVariants}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="text-blue-600 text-sm font-semibold uppercase tracking-wider">
+          <span className="text-blue-400 text-sm font-semibold uppercase tracking-wider">
             Passionate – Dedicated – Professional
           </span>
-          <h2 className="text-3xl font-extrabold text-slate-900 sm:text-4xl mt-2">
+          <h2 className="text-3xl font-extrabold text-white sm:text-4xl mt-2">
             Why Choose Sinha Technology?
           </h2>
-          <p className="text-slate-600 mt-4">
+          <p className="text-slate-400 mt-4">
             We seamlessly integrate bespoke software solutions with robust security systems, ensuring your business is ready for tomorrow’s challenges.
           </p>
         </motion.div>
@@ -91,13 +96,13 @@ function About() {
           <motion.div
             variants={cardVariants}
             whileHover={{ y: -6 }}
-            className="bg-slate-50 border border-slate-200 p-8 rounded-2xl transition-all shadow-sm hover:shadow-md"
+            className="bg-slate-900/60 backdrop-blur-md border border-slate-800 p-8 rounded-2xl transition-all shadow-xl hover:border-blue-500/40 hover:shadow-blue-500/5"
           >
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-6">
+            <div className="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center text-blue-400 mb-6 shadow-inner">
               <Target className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">Our Mission</h3>
-            <p className="text-slate-600 leading-relaxed text-sm">
+            <h3 className="text-xl font-bold text-white mb-3">Our Mission</h3>
+            <p className="text-slate-300 leading-relaxed text-sm">
               Our mission is to empower businesses with innovative, scalable, and data-driven technology solutions that streamline operations, enhance decision-making, and unlock new levels of efficiency.
             </p>
           </motion.div>
@@ -106,13 +111,13 @@ function About() {
           <motion.div
             variants={cardVariants}
             whileHover={{ y: -6 }}
-            className="bg-slate-50 border border-slate-200 p-8 rounded-2xl transition-all shadow-sm hover:shadow-md"
+            className="bg-slate-900/60 backdrop-blur-md border border-slate-800 p-8 rounded-2xl transition-all shadow-xl hover:border-blue-500/40 hover:shadow-blue-500/5"
           >
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-6">
+            <div className="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center text-blue-400 mb-6 shadow-inner">
               <Compass className="w-6 h-6" />
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-3">Our Vision</h3>
-            <p className="text-slate-600 leading-relaxed text-sm">
+            <h3 className="text-xl font-bold text-white mb-3">Our Vision</h3>
+            <p className="text-slate-300 leading-relaxed text-sm">
               Our vision is to become a leading technology powerhouse in the world, known for transforming businesses through innovation, automation, and world-class engineering.
             </p>
           </motion.div>
@@ -134,11 +139,11 @@ function About() {
                 variants={cardVariants}
                 whileHover={{ scale: 1.03, y: -4 }}
                 whileTap={{ scale: 0.98 }}
-                className="p-6 border border-slate-100 rounded-xl bg-white shadow-sm hover:shadow-md border-t-2 hover:border-t-blue-600 transition-all cursor-pointer"
+                className="p-6 border border-slate-800 rounded-xl bg-slate-900/40 backdrop-blur-sm hover:bg-slate-900/80 shadow-lg hover:shadow-xl border-t-2 border-t-blue-500/40 hover:border-t-blue-500 transition-all cursor-pointer group"
               >
-                <Icon className="w-8 h-8 text-blue-600 mb-4" />
-                <h4 className="font-bold text-slate-900 mb-2">{point.title}</h4>
-                <p className="text-xs text-slate-600">{point.description}</p>
+                <Icon className="w-8 h-8 text-blue-400 mb-4 group-hover:scale-110 transition-transform duration-300" />
+                <h4 className="font-bold text-white mb-2">{point.title}</h4>
+                <p className="text-xs text-slate-400 leading-relaxed">{point.description}</p>
               </motion.div>
             );
           })}

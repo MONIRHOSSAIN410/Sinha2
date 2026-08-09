@@ -1,4 +1,4 @@
-import  { useState } from 'react';
+import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
@@ -25,6 +25,7 @@ export default function Contact() {
     setLoading(true);
 
     const templateParams = {
+      to_email: 'sinhatechltd97@gmail.com', // Direct recipient email target
       from_name: formData.name,
       from_email: formData.email,
       phone: formData.phone,
@@ -33,32 +34,47 @@ export default function Contact() {
       message: formData.message,
     };
 
-    emailjs
-      .send(
-        'YOUR_SERVICE_ID',   // Replace with your EmailJS Service ID
-        'YOUR_TEMPLATE_ID',  // Replace with your EmailJS Template ID
-        templateParams,
-        'YOUR_PUBLIC_KEY'    // Replace with your EmailJS Public Key
-      )
-      .then(
-        () => {
-          setLoading(false);
-          toast.success('Inquiry submitted successfully to Gmail!');
-          setFormData({
-            name: '',
-            email: '',
-            phone: '',
-            subject: 'Website',
-            budget: '',
-            message: '',
-          });
-        },
-        (error) => {
-          console.error('EmailJS Error:', error);
-          setLoading(false);
-          toast.error('Failed to send message. Please try again.');
-        }
-      );
+    // Utilizing toast.promise for dynamic real-time feedback
+    const sendEmailPromise = emailjs.send(
+      'YOUR_SERVICE_ID',  // Replace with your EmailJS Service ID
+      'YOUR_TEMPLATE_ID', // Replace with your EmailJS Template ID
+      templateParams,
+      'YOUR_PUBLIC_KEY'   // Replace with your EmailJS Public Key
+    );
+
+    toast.promise(
+      sendEmailPromise,
+      {
+        pending: 'Sending message to sinhatechltd97@gmail.com...',
+        success: 'Inquiry submitted successfully! We will get back to you soon. 👌',
+        error: 'Failed to send message. Please check your network and try again. 🤯',
+      },
+      {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'dark',
+      }
+    )
+    .then(() => {
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: 'Website',
+        budget: '',
+        message: '',
+      });
+    })
+    .catch((error) => {
+      console.error('EmailJS Error:', error);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
   };
 
   // Animation Variants
@@ -91,8 +107,20 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 bg-slate-900 text-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="relative py-20 bg-slate-950 text-white overflow-hidden">
+      {/* Background Ambient Dynamic Glows */}
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute -top-10 -left-10 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px] pointer-events-none"
+      />
+      <motion.div
+        animate={{ scale: [1.2, 1, 1.2], opacity: [0.2, 0.5, 0.2] }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute -bottom-10 -right-10 w-96 h-96 bg-indigo-600/20 rounded-full blur-[140px] pointer-events-none"
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           
           {/* Left Info Column */}
@@ -126,7 +154,7 @@ export default function Contact() {
                 <div>
                   <h4 className="font-bold text-sm text-slate-100">UK Office</h4>
                   <p className="text-slate-300 text-xs">
-                    Khilkhet, Dhaka – 1229, Bangladesh 
+                    London, United Kingdom
                   </p>
                 </div>
               </motion.div>
@@ -135,7 +163,7 @@ export default function Contact() {
                 <Phone className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-bold text-sm text-slate-100">Phone</h4>
-                  <p className="text-slate-300 text-xs">+88 01970 360763</p>
+                  <p className="text-slate-300 text-xs">+880 1970 360763</p>
                 </div>
               </motion.div>
 
@@ -143,7 +171,7 @@ export default function Contact() {
                 <Mail className="w-6 h-6 text-blue-400 mt-1 flex-shrink-0" />
                 <div>
                   <h4 className="font-bold text-sm text-slate-100">Email</h4>
-                  <p className="text-slate-300 text-xs">sinhatechltd97@gmail.com</p>
+                  <p className="text-blue-400 text-xs font-semibold">sinhatechltd97@gmail.com</p>
                 </div>
               </motion.div>
 
@@ -163,7 +191,7 @@ export default function Contact() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={formVariants}
-            className="bg-slate-800 p-8 rounded-2xl border border-slate-700 shadow-xl"
+            className="bg-slate-900/80 backdrop-blur-md p-8 rounded-2xl border border-slate-800 shadow-2xl"
           >
             <h3 className="text-xl font-bold text-white mb-6">Get a Free Consultation</h3>
 
@@ -177,7 +205,7 @@ export default function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="John Doe"
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                 />
               </div>
 
@@ -191,7 +219,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="john@example.com"
-                    className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                   />
                 </div>
                 <div>
@@ -202,7 +230,7 @@ export default function Contact() {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+880 17..."
-                    className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                   />
                 </div>
               </div>
@@ -214,7 +242,7 @@ export default function Contact() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                   >
                     <option value="Website">Website</option>
                     <option value="Fusion LedgerKey">Fusion LedgerKey</option>
@@ -235,7 +263,7 @@ export default function Contact() {
                     value={formData.budget}
                     onChange={handleChange}
                     placeholder="e.g. 1000"
-                    className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                   />
                 </div>
               </div>
@@ -249,7 +277,7 @@ export default function Contact() {
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Describe your requirement..."
-                  className="w-full px-4 py-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
+                  className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                 ></textarea>
               </div>
 
@@ -258,9 +286,9 @@ export default function Contact() {
                 disabled={loading}
                 whileHover={{ scale: loading ? 1 : 1.02 }}
                 whileTap={{ scale: loading ? 1 : 0.98 }}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 transition disabled:opacity-50"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 transition disabled:opacity-50 cursor-pointer"
               >
-                {loading ? 'Sending...' : 'Send Message'}
+                {loading ? 'Sending Request...' : 'Send Message'}
                 <motion.div
                   animate={{ x: loading ? [0, 5, 0] : 0 }}
                   transition={{ repeat: loading ? Infinity : 0, duration: 0.6 }}

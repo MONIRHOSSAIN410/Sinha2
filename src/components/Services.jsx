@@ -66,8 +66,21 @@ export default function Services() {
   };
 
   return (
-    <section id="services" className="py-20 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="services" className="relative py-20 overflow-hidden bg-slate-900 text-white">
+      
+      {/* Background Image Container */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" 
+          alt="Background Technology Pattern"
+          className="w-full h-full object-cover object-center"
+        />
+        {/* Dark Overlay for Readability (adjust opacity via /80 or /90) */}
+        <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-xs" />
+      </div>
+
+      {/* Main Content (Elevated above background via relative z-10) */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Animation */}
         <motion.div 
@@ -77,13 +90,13 @@ export default function Services() {
           variants={headerVariants}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <span className="text-blue-600 text-sm font-semibold uppercase tracking-wider">
+          <span className="text-blue-400 text-sm font-semibold uppercase tracking-wider">
             Services & Expertise
           </span>
-          <h2 className="text-3xl font-extrabold text-slate-900 sm:text-4xl mt-2">
+          <h2 className="text-3xl font-extrabold text-white sm:text-4xl mt-2">
             Transforming Endless Possibilities
           </h2>
-          <p className="text-slate-600 mt-4">
+          <p className="text-slate-300 mt-4">
             We engineer intelligent, scalable digital solutions that drive real business growth.
           </p>
         </motion.div>
@@ -104,18 +117,18 @@ export default function Services() {
                 variants={cardVariants}
                 whileHover={{ y: -8, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="p-8 rounded-2xl border border-slate-100 bg-slate-50 hover:bg-white hover:border-blue-100 hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                className="p-8 rounded-2xl border border-slate-700/50 bg-slate-800/60 backdrop-blur-md hover:bg-slate-800/90 hover:border-blue-500/50 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-300 group cursor-pointer"
               >
                 <motion.div 
                   whileHover={{ rotate: 8, scale: 1.1 }}
-                  className="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center mb-6 shadow-md group-hover:bg-blue-700 transition-colors"
+                  className="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center mb-6 shadow-md group-hover:bg-blue-500 transition-colors"
                 >
                   <Icon className="w-6 h-6" />
                 </motion.div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">
                   {srv.title}
                 </h3>
-                <p className="text-slate-600 text-sm leading-relaxed">
+                <p className="text-slate-300 text-sm leading-relaxed">
                   {srv.desc}
                 </p>
               </motion.div>

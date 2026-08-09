@@ -48,7 +48,7 @@ function Footer() {
         <motion.div variants={columnVariants}>
           <h4 className="text-white font-semibold mb-3">Our Products</h4>
           <ul className="space-y-2 text-xs">
-            {['Bulk SMS Service', 'Fusion Cloud', 'Corporate Email', 'Pulse HR', 'Fusion Technology'].map((item) => (
+            {['Bulk SMS Service', 'Fusion Cloud', 'Ai Services', 'Cloud Domain', 'SaaS Technology'].map((item) => (
               <motion.li key={item} whileHover="hover">
                 <motion.a
                   variants={linkHoverVariants}
@@ -70,7 +70,7 @@ function Footer() {
               { label: 'Home', href: '#home' },
               { label: 'About Us', href: '#about' },
               { label: 'Services', href: '#services' },
-              { label: 'Get a Quote', href: '#contact' },
+             {label:'Contact', href:'#contact'}
             ].map((link) => (
               <motion.li key={link.label} whileHover="hover">
                 <motion.a

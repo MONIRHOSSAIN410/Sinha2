@@ -1,31 +1,47 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { CompanyProvider, useCompany } from "./components/CompanyContext";
+import AuthPage from "./components/Authpage";
+import PlatformSection from "./components/PlatformSection";
 
-import { CompanyProvider, useCompany } from './components/CompanyContext';
-import { DynamicClients, DynamicReviews, DynamicTeam } from './components/ClientAndTeamSections';
-import AdminPanel from './components/AdminPanel';
-import About from './components/About';
-import Contact from './components/Contect';
-import Hero from './components/Hero';
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
+const Navbar = lazy(() => import("./components/Navbar"));
+const Hero = lazy(() => import("./components/Hero"));
+const About = lazy(() => import("./components/About"));
+const Products = lazy(() => import("./components/Products"));
+const Services = lazy(() => import("./components/Services"));
+const Contact = lazy(() => import("./components/Contect"));
+const Footer = lazy(() => import("./components/Footer"));
+// const PaymentGateways = lazy(() => import("./components/PaymentGateways"));
+
+function Home() {
+  const { companyData } = useCompany();
+  return (
+    <>
+      <Hero />
+      <About />
+      <Products />
+      <PlatformSection/>
+      {/* <PaymentGateways/> */}
+      <Services />
+      <Contact companyAddress={companyData?.address} />
+    </>
+  );
+}
 
 function AppContent() {
   const { companyData } = useCompany();
 
   return (
-    <div className="bg-slate-900 text-slate-100 min-h-screen">
-      {/* Existing Sections dynamically connected */}
-      <Navbar/>
-      <Hero companyName={companyData.name} address={companyData.address.hq} />
-      <DynamicClients />
-      <About />
-      <DynamicTeam />
-      <DynamicReviews />
-      <Contact companyAddress={companyData.address} />
-      <Footer companyName={companyData.name} />
-
-      {/* Live Admin Interface */}
-      <AdminPanel />
-    </div>
+    <Router>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/auth" element={<AuthPage />} />
+        </Routes>
+        <Footer companyName={companyData?.name} />
+      </Suspense>
+    </Router>
   );
 }
 
