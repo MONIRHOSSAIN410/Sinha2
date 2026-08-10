@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { CompanyProvider, useCompany } from "./components/CompanyContext";
 import AuthPage from "./components/Authpage";
@@ -11,7 +11,6 @@ const Products = lazy(() => import("./components/Products"));
 const Services = lazy(() => import("./components/Services"));
 const Contact = lazy(() => import("./components/Contect"));
 const Footer = lazy(() => import("./components/Footer"));
-// const PaymentGateways = lazy(() => import("./components/PaymentGateways"));
 
 function Home() {
   const { companyData } = useCompany();
@@ -20,26 +19,41 @@ function Home() {
       <Hero />
       <About />
       <Products />
-      <PlatformSection/>
-      {/* <PaymentGateways/> */}
+      <PlatformSection />
       <Services />
       <Contact companyAddress={companyData?.address} />
     </>
   );
 }
 
-function AppContent() {
+// 1. Create a Layout component containing Navbar & Footer
+function MainLayout() {
   const { companyData } = useCompany();
 
   return (
+    <>
+      <Navbar />
+      {/* <Outlet /> renders the active child route (e.g. <Home />) */}
+      <Outlet />
+      <Footer companyName={companyData?.name} />
+    </>
+  );
+}
+
+function AppContent() {
+  return (
     <Router>
       <Suspense fallback={<div>Loading...</div>}>
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* Auth page sits outside MainLayout -> No Navbar or Footer */}
           <Route path="/auth" element={<AuthPage />} />
+
+          {/* Pages wrapped inside MainLayout -> Have Navbar & Footer */}
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Home />} />
+            {/* Add any other pages here that need Navbar & Footer */}
+          </Route>
         </Routes>
-        <Footer companyName={companyData?.name} />
       </Suspense>
     </Router>
   );
