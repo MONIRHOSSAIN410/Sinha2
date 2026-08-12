@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, X, Phone, Mail, User, Sparkles, Cpu } from 'lucide-react';
+import { Menu, X, Phone, Mail, User, Cpu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 
@@ -187,7 +187,7 @@ export default function Navbar({ onNavigate, user, logoSrc }) {
             </motion.a>
           ))}
 
-          {/* Login / Signup or Account Button */}
+          {/* Login or Account Button */}
           <motion.button
             onClick={handleAuthClick}
             whileHover={{ scale: 1.05 }}
@@ -196,7 +196,7 @@ export default function Navbar({ onNavigate, user, logoSrc }) {
           >
             <span className="absolute inset-0 bg-gradient-to-r from-blue-600/30 via-indigo-600/30 to-purple-600/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <User className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors relative z-10" />
-            <span className="relative z-10">{user ? user.name || 'Account' : 'Login / Signup'}</span>
+            <span className="relative z-10">{user ? user.name || 'Account' : 'Login'}</span>
           </motion.button>
         </nav>
 
@@ -273,19 +273,8 @@ export default function Navbar({ onNavigate, user, logoSrc }) {
               className="w-full flex items-center justify-center gap-2 border border-blue-500/40 text-blue-300 bg-slate-900/80 hover:bg-slate-800 font-medium py-2.5 rounded-xl transition-all duration-200 cursor-pointer shadow-md mt-2"
             >
               <User className="w-4 h-4 text-blue-400" />
-              {user ? user.name || 'Account' : 'Login / Signup'}
+              {user ? user.name || 'Account' : 'Login'}
             </motion.button>
-
-            <motion.a
-              variants={linkVariants}
-              href="#contact"
-              onClick={() => handleNavClick('home', '#contact')}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-medium py-2.5 rounded-xl shadow-lg shadow-blue-600/20 transition-all cursor-pointer"
-            >
-              <Sparkles className="w-4 h-4" /> Get A Quote
-            </motion.a>
           </motion.div>
         )}
       </AnimatePresence>
