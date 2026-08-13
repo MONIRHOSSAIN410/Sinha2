@@ -1,9 +1,15 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { CompanyProvider, useCompany } from "./components/CompanyContext";
 import AuthPage from "./components/Authpage";
 import PlatformSection from "./components/PlatformSection";
 
+// Helper: check if an admin is logged in
+const isAuthenticated = () => {
+  return !!localStorage.getItem("adminSession");
+};
+
+// Lazy loaded components
 const Navbar = lazy(() => import("./components/Navbar"));
 const Hero = lazy(() => import("./components/Hero"));
 const About = lazy(() => import("./components/About"));
@@ -26,15 +32,16 @@ function Home() {
   );
 }
 
-// 1. Create a Layout component containing Navbar & Footer
+// Layout component containing Navbar & Footer (Shared layout for public pages)
 function MainLayout() {
   const { companyData } = useCompany();
 
   return (
     <>
       <Navbar />
-      {/* <Outlet /> renders the active child route (e.g. <Home />) */}
-      <Outlet />
+      <main>
+        <Outlet />
+      </main>
       <Footer companyName={companyData?.name} />
     </>
   );
@@ -43,16 +50,18 @@ function MainLayout() {
 function AppContent() {
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div className="flex h-screen items-center justify-center text-white">Loading...</div>}>
         <Routes>
-          {/* Auth page sits outside MainLayout -> No Navbar or Footer */}
-          <Route path="/auth" element={<AuthPage />} />
-
-          {/* Pages wrapped inside MainLayout -> Have Navbar & Footer */}
+          {/* Pages that SHOULD have Navbar and Footer */}
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
-            {/* Add any other pages here that need Navbar & Footer */}
           </Route>
+
+          {/* Standalone Login Page (NO Navbar / Footer) */}
+          <Route path="/login" element={<AuthPage />} />
+
+          {/* Catch all fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
     </Router>

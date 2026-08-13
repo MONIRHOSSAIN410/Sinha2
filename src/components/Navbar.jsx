@@ -38,22 +38,14 @@ export default function Navbar({ onNavigate, user, logoSrc }) {
   };
 
   const handleAuthClick = () => {
-    setIsOpen(false);
-    
-    if (user) {
-      if (onNavigate) {
-        onNavigate('profile'); 
-      } else {
-        navigate('/profile');
-      }
-    } else {
-      if (onNavigate) {
-        onNavigate('auth');
-      } else {
-        navigate('/auth');
-      }
-    }
-  };
+  setIsOpen(false);
+  
+  if (onNavigate) {
+    onNavigate('login'); // Calls local state handler if passed
+  } else {
+    navigate('/login');  // Navigates using React Router
+  }
+};
 
   const headerVariants = {
     hidden: { y: -50, opacity: 0 },
@@ -153,7 +145,6 @@ export default function Navbar({ onNavigate, user, logoSrc }) {
               className="h-10 sm:h-12 w-auto object-contain drop-shadow-[0_0_12px_rgba(59,130,246,0.3)] group-hover:drop-shadow-[0_0_18px_rgba(99,102,241,0.5)] transition-all duration-300" 
             />
           ) : (
-            /* Dynamic Vector Fallback Brand Badge */
             <div className="flex items-center gap-2 bg-gradient-to-r from-slate-900 to-slate-950 p-2 rounded-xl border border-blue-500/30 group-hover:border-blue-400/60 shadow-lg shadow-blue-500/10 transition-all">
               <div className="p-1.5 bg-blue-600/20 rounded-lg text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-all">
                 <Cpu className="w-5 h-5 animate-pulse" />
@@ -182,7 +173,6 @@ export default function Navbar({ onNavigate, user, logoSrc }) {
               className="relative font-medium text-slate-300 hover:text-white transition-colors duration-200 text-sm cursor-pointer group py-1"
             >
               {link.name}
-              {/* Dynamic glowing bar on hover */}
               <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 transition-all duration-300 group-hover:w-full rounded-full" />
             </motion.a>
           ))}
